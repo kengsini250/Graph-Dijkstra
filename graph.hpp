@@ -86,7 +86,9 @@ public:
 		int count = 0;
 		int minCost = 99;
 		Node *minNode; //= new Node;
-
+#ifdef DEBUG
+		displayWeight();
+#endif
 		cost[node[count]->getID()] = 0;
 		while ((cost[count] <= minCost) && (found[count] == false))
 		{
@@ -95,24 +97,27 @@ public:
 			auto next = minNode->getNext(); //B,C,D
 			int temp = _MAX;
 			int Distance;
-			for (auto p = next.begin(); p != next.end(); p++)
+			auto p = next.begin();
+			for (; p != next.end(); p++)
 			{
 				if ((*p) == NULL)
 					continue;
 				else
 				{
+					cost[(*p)->getID()] = getWeight(count,(*p)->getID());
+					LinkFrom[(*p)->getID()] = node[count]->getName(); 
 					if (getWeight(count, (*p)->getID()) <= temp)
 					{
 						temp = getWeight(count, (*p)->getID());
-						cost[(*p)->getID()] = temp;
+						cost[(*p)->getID()] = temp; // 4 3 5
 						Distance = std::distance(std::begin(next), p);
-						LinkFrom[(*p)->getID()] = node[count]->getName();
+						LinkFrom[(*p)->getID()] = node[count]->getName(); // A A A
 					}
-#ifdef DEBUG
-					display();
-#endif
 				}
 			}
+#ifdef DEBUG
+			display();
+#endif
 			count = Distance;
 		} //while
 	}
